@@ -28,13 +28,6 @@ export class ResidentService {
 
     getAll() {
         return this.http.get<Resident[]>(baseUrl)
-            .pipe(
-                map(residents => {
-                    console.log(residents); // Log the residents
-                    this.residentSubject.next(residents);
-                    return residents;
-                })
-            );
     }
 
     getById(id: string) {
