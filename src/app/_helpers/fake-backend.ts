@@ -10,6 +10,9 @@ import { Role } from '@app/_models';
 const accountsKey = 'angular-10-signup-verification-boilerplate-accounts';
 let accounts = JSON.parse(localStorage.getItem(accountsKey)) || [];
 
+const residentsKey = 'angular-10-signup-verification-boilerplate-residents';
+let residents = JSON.parse(localStorage.getItem(residentsKey)) || [];
+
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     constructor(private alertService: AlertService) { }
@@ -48,6 +51,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return updateAccount();
                 case url.match(/\/accounts\/\d+$/) && method === 'DELETE':
                     return deleteAccount();
+                case url.endsWith('/residents') && method === 'GET':
+                    return getResidents();
+                case url.match(/\/residents\/\d+$/) && method === 'GET':
+                    return getResidentById();
+                case url.endsWith('/accounts') && method === 'POST':
+                    return createResident();
+                case url.match(/\/residents\/\d+$/) && method === 'PUT':
+                    return updateResident();
+                case url.match(/\/residents\/\d+$/) && method === 'DELETE':
+                    return deleteResident();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -67,7 +80,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
 
             return ok({
-                ...basicDetails(account),
+                ...basicDetailsAccount(account),
                 jwtToken: generateJwtToken(account)
             });
         }
@@ -87,7 +100,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
 
             return ok({
-                ...basicDetails(account),
+                ...basicDetailsAccount(account),
                 jwtToken: generateJwtToken(account)
             });
 
@@ -227,7 +240,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function getAccounts() {
             if (!isAuthenticated()) return unauthorized();
-            return ok(accounts.map(x => basicDetails(x)));
+            return ok(accounts.map(x => basicDetailsAccount(x)));
+        }
+
+        function getResidents() {
+            if (!isAuthenticated()) return unauthorized();
+            return ok(residents.map(x => basicDetailsResident(x)));
         }
 
         function getAccountById() {
@@ -240,7 +258,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return unauthorized();
             }
 
-            return ok(basicDetails(account));
+            return ok(basicDetailsAccount(account));
+        }
+
+        function getResidentById() {
+            if (!isAuthenticated()) return unauthorized();
+
+            let resident = residents.find(x => x.id === idFromUrl());
+
+            // user accounts can get own profile and admin accounts can get all profiles
+            if (!isAuthorized(Role.Admin)) {
+                return unauthorized();
+            }
+
+            return ok(basicDetailsResident(resident));
         }
 
         function createAccount() {
@@ -259,6 +290,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             delete account.confirmPassword;
             accounts.push(account);
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
+
+            return ok();
+        }
+
+        function createResident() {
+            if (!isAuthorized(Role.Admin) && !isAuthorized(Role.Staff)) return unauthorized();
+
+            const resident = body;
+            // assign account id and a few other properties then save
+            resident.id = newResidentId();
+            resident.dateCreated = new Date().toISOString();
+            resident.refreshTokens = [];
+            residents.push(resident);
+            localStorage.setItem(residentsKey, JSON.stringify(residents));
 
             return ok();
         }
@@ -285,7 +330,24 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             Object.assign(account, params);
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
 
-            return ok(basicDetails(account));
+            return ok(basicDetailsAccount(account));
+        }
+
+        function updateResident() {
+            if (!isAuthenticated()) return unauthorized();
+
+            let params = body;
+            let resident = residents.find(x => x.id === idFromUrl());
+
+            // user accounts can update own profile and admin accounts can update all profiles
+            if (!isAuthorized(Role.Admin) && !isAuthorized(Role.Staff)) {
+                return unauthorized();
+            }
+            // update and save account
+            Object.assign(resident, params);
+            localStorage.setItem(residentsKey, JSON.stringify(residents));
+
+            return ok(basicDetailsResident(resident));
         }
 
         function deleteAccount() {
@@ -301,6 +363,22 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // delete account then save
             accounts = accounts.filter(x => x.id !== idFromUrl());
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
+            return ok();
+        }
+
+        function deleteResident() {
+            if (!isAuthenticated()) return unauthorized();
+
+            let resident = residents.find(x => x.id === idFromUrl());
+
+            // user accounts can delete own account and admin accounts can delete any account
+            if (!isAuthorized(Role.Admin)) {
+                return unauthorized();
+            }
+
+            // delete account then save
+            residents = residents.filter(x => x.id !== idFromUrl());
+            localStorage.setItem(residentsKey, JSON.stringify(residents));
             return ok();
         }
         
@@ -321,9 +399,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 .pipe(materialize(), delay(500), dematerialize());
         }
 
-        function basicDetails(account) {
+        function basicDetailsAccount(account) {
             const { id, title, firstName, lastName, email, role, dateCreated, isVerified } = account;
             return { id, title, firstName, lastName, email, role, dateCreated, isVerified };
+        }
+
+        function basicDetailsResident(resident) {
+            const { id, title, firstName, lastName, birthDate, occupation, address, contactNumber, latitude, longitude, dateCreated } = resident;
+            return { id, title, firstName, lastName, birthDate, occupation, address, contactNumber, latitude, longitude,dateCreated};
         }
 
         function isAuthenticated() {
@@ -344,6 +427,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         
         function newAccountId() {
             return accounts.length ? Math.max(...accounts.map(x => x.id)) + 1 : 1;
+        }
+
+        function newResidentId() {
+            return residents.length ? Math.max(...residents.map(x => x.id)) + 1 : 1;
         }
 
         function currentAccount() {

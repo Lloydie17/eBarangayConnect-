@@ -12,6 +12,7 @@ export class AddEditComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
+    residents: any = {};
 
     constructor(
         private formBuilder: FormBuilder,
@@ -32,7 +33,7 @@ export class AddEditComponent implements OnInit {
             birthDate: ['', Validators.required],
             occupation: [''], // Allow null for occupation
             address: ['', Validators.required],
-            contactNumber: ['', Validators.required],
+            contactNumber: ['', Validators.required, Validators.pattern('[0-9]{11}')],
             latitude: ['', Validators.required],
             longitude: ['', Validators.required],
         });
@@ -67,7 +68,7 @@ export class AddEditComponent implements OnInit {
     }
 
     private createResident() {
-        this.residentService.create(this.form.value)
+        this.residentService.createResident(this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {
@@ -82,7 +83,7 @@ export class AddEditComponent implements OnInit {
     }
 
     private updateResident() {
-        this.residentService.update(this.id, this.form.value)
+        this.residentService.updateResident(this.id, this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {

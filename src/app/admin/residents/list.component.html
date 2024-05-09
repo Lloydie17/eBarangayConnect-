@@ -5,25 +5,26 @@
     <thead>
         <tr>
             <th style="width:10%">Name</th>
-            <th style="width:10%">Birth Date</th>
-            <th style="width:10%">Age</th>
-            <th style="width:10%">Occupation</th>
-            <th style="width:10%">Address</th>
+            <th style="width:13%">Birth Date</th>
+            <th style="width:5%">Age</th>
+            <th style="width:5%">Occupation</th>
+            <th style="width:5%">Address</th>
             <th style="width:10%">Contact Number</th>
-            <th style="width:10%"></th>
+            <th style="width:10%">Action</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let resident of residents">
             <td>{{resident.title}} {{resident.fullName}} </td>
-            <td>{{resident.birthDate}}</td>
+            <td>{{resident.birthDate | date: 'longDate'}}</td>
             <td>{{resident.age}}</td>
             <td>{{resident.occupation}}</td>
             <td>{{resident.address}}</td>
             <td>{{resident.contactNumber}}</td>
             <td style="white-space: nowrap">
+                <a routerLink="details/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
                 <a routerLink="edit/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                <button (click)="deleteResident(resident.id)" class="btn btn-sm btn-danger btn-delete-account" [disabled]="account.isDeleting">
+                <button (click)="deleteResident(resident.id)" class="btn btn-sm btn-danger btn-delete-account" [disabled]="resident.isDeleting">
                     <span *ngIf="resident.isDeleting" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!resident.isDeleting">Delete</span>
                 </button>

@@ -34,15 +34,15 @@ export class ResidentService {
         return this.http.get<Resident>(`${baseUrl}/${id}`);
     }
     
-    create(params) {
+    createResident(params) {
         return this.http.post(baseUrl, params);
     }
     
-    update(id, params) {
+    updateResident(id, params) {
         return this.http.put(`${baseUrl}/${id}`, params)
             .pipe(map((resident: any) => {
                 // update the current account if it was updated
-                if (resident.id === this.residentValue.id) {
+                if (this.residentValue && resident.id === this.residentValue.id) {
                     // publish updated account to subscribers
                     resident = { ...this.residentValue, ...resident };
                     this.residentSubject.next(resident);
@@ -51,7 +51,7 @@ export class ResidentService {
             }));
     }
 
-    delete(id: string) {
+    deleteResident(id: string) {
         return this.http.delete(`${baseUrl}/${id}`);
     }
 }

@@ -1,0 +1,38 @@
+<h1>Residents Data</h1>
+<p>
+    <strong>Name: </strong> {{resident.title}} {{resident.fullName}}<br />
+    <strong>Birthday: </strong> {{resident.birthDate | date: 'longDate'}} <br />
+    <strong>Age: </strong> {{resident.age}} <br />
+    <strong>Address: </strong> {{resident.address}} <br />
+    <strong>Contact Number: </strong> {{resident.contactNumber}} <br />
+    <strong>Latitude: </strong> {{resident.latitude}} <br />
+    <strong>Longitude: </strong> {{resident.longitude}}
+</p>
+<br />
+<h1>Certificate Records</h1>
+<a routerLink="#" class="btn btn-sm btn-success mb-2">Add Certificate</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width:20%">Name</th>
+            <th style="width:20%">Certificate Purpose</th>
+            <th style="width:20%">Date Issued</th>
+            <th style="width:10%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let resident of residents">
+            <td>{{resident.fullName}} </td>
+            <td>{{resident.certificatePurpose}}</td>
+            <td>{{resident.createdAt | date: 'longDate'}}</td>
+            <td style="white-space: nowrap">
+                <a routerLink="details/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <a routerLink="edit/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <button (click)="deleteResident(resident.id)" class="btn btn-sm btn-danger btn-delete-account" [disabled]="resident.isDeleting">
+                    <span *ngIf="resident.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!resident.isDeleting">Delete</span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
