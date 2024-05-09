@@ -22,7 +22,7 @@
             <td>{{resident.address}}</td>
             <td>{{resident.contactNumber}}</td>
             <td style="white-space: nowrap">
-                <a routerLink="details/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Certificate</a>
+                <a routerLink="resident-details/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Certificate</a>
                 <a routerLink="edit/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
                 <button (click)="deleteResident(resident.id)" class="btn btn-sm btn-danger btn-delete-account" [disabled]="resident.isDeleting">
                     <span *ngIf="resident.isDeleting" class="spinner-border spinner-border-sm"></span>

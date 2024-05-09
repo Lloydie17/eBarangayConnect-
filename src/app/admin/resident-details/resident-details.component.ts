@@ -1,27 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResidentService, ResidentRecordService } from '@app/_services';
 import { ResidentRecord } from '@app/_models';
 
 @Component({ templateUrl: 'resident-details.component.html' })
-export class ResidentDetailsComponent {
+export class ResidentDetailsComponent implements OnInit {
     resident: any = {};
     id: string;
 
     constructor(
         private route: ActivatedRoute,
-        private residentService: ResidentService
+        private residentService: ResidentService,
+        private residentRecordService: ResidentRecordService
     ) { }
 
-    ngOnInit(): void {
+    ngOnInit() {
         // Get the resident id from the route parameters
-        this.id = this.route.snapshot.params['id'];
-
-        // Call the method to fetch resident details
-        this.loadResidentDetails();
+        this.route.params.subscribe(params => {
+            this.id = params['id'];
+            // Call the method to fetch resident details
+            this.loadResidentDetails();
+        });
     }
 
-    loadResidentDetails(): void {
+
+    loadResidentDetails() {
         this.residentService.getById(this.id).subscribe(
             (resident: any) => {
                 this.resident = resident; // Assign the fetched resident data to the local property

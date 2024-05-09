@@ -58,12 +58,13 @@ export class AddCertificateComponent implements OnInit {
     }
 
     private createCertificate() {
-        this.residentRecordService.createCertificate(this.form.value)
+        const formData = { ...this.form.value, residentId: this.id };
+        this.residentRecordService.createCertificate(formData)
             .pipe(first())
             .subscribe({
                 next: () => {
                     this.alertService.success('Certificate created successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['../'], { relativeTo: this.route });
+                    this.router.navigate(['../../resident', this.id], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);
