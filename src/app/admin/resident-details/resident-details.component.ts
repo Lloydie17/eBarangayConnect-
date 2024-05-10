@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ResidentService } from '@app/_services';
+import { ResidentService, ResidentRecordService } from '@app/_services';
+import { ResidentRecord } from '@app/_models';
 
 @Component({ templateUrl: 'resident-details.component.html' })
 export class ResidentDetailsComponent {
-    residents: any[];
+    resident: any = {};
     id: string;
 
     constructor(
@@ -23,7 +24,7 @@ export class ResidentDetailsComponent {
     loadResidentDetails(): void {
         this.residentService.getById(this.id).subscribe(
             (resident: any) => {
-                this.residents = resident; // Assign the fetched resident data to the local property
+                this.resident = resident; // Assign the fetched resident data to the local property
             },
             error => {
                 console.error('Error fetching resident details:', error);

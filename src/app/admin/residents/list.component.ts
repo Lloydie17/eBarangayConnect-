@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-
 import { ResidentService } from '@app/_services';
 import { Resident } from '@app/_models';
 

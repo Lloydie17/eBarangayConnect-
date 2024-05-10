@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ResidentDetailsRoutingModule } from './resident-routing.module';
 import { LayoutComponent } from './layout.component';
 import { ResidentDetailsComponent } from './resident-details.component';
+import { AddCertificateComponent } from './add-certificate.component';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { ResidentDetailsComponent } from './resident-details.component';
     ],
     declarations: [
         LayoutComponent,
-        ResidentDetailsComponent
+        ResidentDetailsComponent,
+        AddCertificateComponent
     ]
 })
 export class ResidentDetailsModule { }
