@@ -8,6 +8,8 @@ import { OverviewComponent } from './overview.component';
 const accountsModule = () => import('./accounts/accounts.module').then(x => x.AccountsModule);
 const residentsModule = () => import('./residents/residents.module').then(x => x.ResidentsModule);
 const residentDetailsModule = () => import('./resident-details/resident.module').then(x => x.ResidentDetailsModule);
+const tracksModule = () => import('./track-residents/tracks.module').then(x => x.TracksModule);
+
 
 const routes: Routes = [
     { path: '', component: SubNavComponent, outlet: 'subnav' },
@@ -17,7 +19,8 @@ const routes: Routes = [
             { path: '', component: OverviewComponent },
             { path: 'accounts', loadChildren: accountsModule },
             { path: 'residents', loadChildren: residentsModule },
-            { path: 'resident-details', loadChildren: residentDetailsModule }
+            { path: 'resident-details', loadChildren: residentDetailsModule },
+            { path: 'track-resident', loadChildren: tracksModule }
         ]
     }
 ];

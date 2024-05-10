@@ -54,4 +54,9 @@ export class ResidentService {
     deleteResident(id: string) {
         return this.http.delete(`${baseUrl}/${id}`);
     }
+
+    getResidentLocation(firstName: string): Observable<any> {
+        return this.http.get<any>(`${baseUrl}/location/${firstName}`);
+    }
+
 }

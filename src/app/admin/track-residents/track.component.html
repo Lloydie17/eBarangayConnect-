@@ -1,0 +1,10 @@
+<div class="p-4">
+    <div class="container">
+        <label>Enter Resident's Name</label> <br>
+        <input type="text" [(ngModel)]="residentName">
+        <button (click)="searchResident()">Search</button>
+        <div id="map" class="map">
+            <iframe id="googleMap" src="http://maps.google.com/maps?q=10.297321,123.8970096&z=16&output=embed" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+</div>
