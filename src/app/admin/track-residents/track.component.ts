@@ -26,6 +26,6 @@ export class TrackComponent {
         console.log("Latitude:", latitude);
         console.log("Longitude:", longitude);
         const mapIframe = document.getElementById('googleMap') as HTMLIFrameElement;
-        mapIframe.src = `http://maps.google.com/maps?q=${latitude},${longitude}&z=16&output=embed`;
+        mapIframe.src = `https://www.google.com/maps?q=${latitude},${longitude}&z=90&output=embed`;
     }
 }
