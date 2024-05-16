@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { ResidentDetailsRoutingModule } from './resident-routing.module';
-import { LayoutComponent } from './layout.component';
 import { ResidentDetailsComponent } from './resident-details.component';
 import { AddCertificateComponent } from './add-certificate.component';
 
@@ -14,7 +13,6 @@ import { AddCertificateComponent } from './add-certificate.component';
         ResidentDetailsRoutingModule
     ],
     declarations: [
-        LayoutComponent,
         ResidentDetailsComponent,
         AddCertificateComponent
     ]

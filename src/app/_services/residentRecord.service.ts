@@ -26,6 +26,10 @@ export class ResidentRecordService {
         return this.residentRecordSubject.value;
     }
 
+    getAllByResidentId(residentId: string) {
+        return this.http.get<ResidentRecord[]>(`${baseUrl}/resident/${residentId}`);
+    }
+
     getAll() {
         return this.http.get<ResidentRecord[]>(baseUrl)
     }
@@ -36,5 +40,9 @@ export class ResidentRecordService {
     
     createCertificate(params) {
         return this.http.post(baseUrl, params);
+    }
+    
+    generateCertificate(residentId: string, certificatePurpose: string) {
+        return this.http.post<any>(`${baseUrl}/generate`, { residentId, certificatePurpose });
     }
 }

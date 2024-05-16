@@ -1,3 +1,5 @@
 export class ResidentRecord {
-    purpose: string;
+    id: string;
+    residentId: string;
+    certificatePurpose: string;
 }

@@ -10,7 +10,7 @@
 </p>
 <br />
 <h1>Certificate Records</h1>
-<a routerLink="addCertificate" class="btn btn-sm btn-success mb-2">Add Certificate</a>
+<a [routerLink]="['/admin/resident', resident.id, 'add']" class="btn btn-sm btn-success mb-2">Add Certificate</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -21,12 +21,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let resident of resident">
+        <tr >
             <td>{{resident.fullName}} </td>
-            <td>{{resident.certificatePurpose}}</td>
-            <td>{{resident.createdAt | date: 'longDate'}}</td>
+            <td>{{record.certificatePurpose}}</td>
+            <td>{{record.createdAt | date: 'longDate'}}</td>
             <td style="white-space: nowrap">
-                <a routerLink="edit/{{resident.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <button (click)="generateCertificate()" class="btn btn-sm btn-success mr-1">Download</button>
             </td>
         </tr>
     </tbody>

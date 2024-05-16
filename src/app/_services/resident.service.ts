@@ -58,5 +58,6 @@ export class ResidentService {
     getResidentLocation(firstName: string): Observable<any> {
         return this.http.get<any>(`${baseUrl}/location/${firstName}`);
     }
+    
 
 }

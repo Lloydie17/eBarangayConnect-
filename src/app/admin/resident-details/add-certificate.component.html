@@ -2,11 +2,12 @@
 <h1 *ngIf="!isAddMode">Edit Resident</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
+        <input type="hidden" formControlName="residentId" />
         <div class="form-group col-5">
             <label>Purpose of Certificate</label>
-            <input type="text" formControlName="purpose" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.purpose.errors }" />
-            <div *ngIf="submitted && f.purpose.errors" class="invalid-feedback">
-                <div *ngIf="f.purpose.errors.required">Purpose of Certificate is required</div>
+            <input type="text" formControlName="certificatePurpose" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.certificatePurpose.errors }" />
+            <div *ngIf="submitted && f.certificatePurpose.errors" class="invalid-feedback">
+                <div *ngIf="f.certificatePurpose.errors.required">Purpose of Certificate is required</div>
             </div>
         </div>
     </div>

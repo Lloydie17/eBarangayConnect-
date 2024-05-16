@@ -12,7 +12,6 @@ export class AddCertificateComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
-    residents: any = {};
 
     constructor(
         private formBuilder: FormBuilder,
@@ -23,11 +22,14 @@ export class AddCertificateComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('AddCertificateComponent initialized');
         this.id = this.route.snapshot.params['id'];
+        console.log('Route snapshot params:', this.route.snapshot.params);
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
-            purpose: ['', Validators.required]
+            residentId: [this.id],
+            certificatePurpose: ['', Validators.required]
         });
 
         if (!this.isAddMode) {
@@ -59,6 +61,7 @@ export class AddCertificateComponent implements OnInit {
 
     private createCertificate() {
         const formData = { ...this.form.value, residentId: this.id };
+        this.loading = true; // Set loading to true before making the request
         this.residentRecordService.createCertificate(formData)
             .pipe(first())
             .subscribe({
@@ -68,8 +71,11 @@ export class AddCertificateComponent implements OnInit {
                 },
                 error: error => {
                     this.alertService.error(error);
-                    this.loading = false;
+                },
+                complete: () => {
+                    this.loading = false; // Set loading to false after the request is complete
                 }
             });
     }
+    
 }
