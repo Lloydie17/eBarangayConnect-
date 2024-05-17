@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ResidentService, ResidentRecordService } from '@app/_services';
+import { ResidentRecord } from '@app/_models';
 
 @Component({ templateUrl: 'resident-details.component.html' })
 export class ResidentDetailsComponent implements OnInit {
     resident: any = {};
     id: string;
-    record: any = {};
+    records: ResidentRecord[] = [];
+    selectedRecord: ResidentRecord; // To hold the record for certificate generation
 
     constructor(
         private route: ActivatedRoute,
@@ -16,53 +18,47 @@ export class ResidentDetailsComponent implements OnInit {
 
     ngOnInit() {
         console.log('ResidentDetailsComponent initialized');
-        // Get the resident id from the route parameters
         this.route.params.subscribe(params => {
             this.id = params['id'];
             console.log('Route params:', params);
-            // Call the method to fetch resident details
             this.loadResidentDetails();
-            this.loadResidentRecords();
         });
     }
-
 
     loadResidentDetails() {
         this.residentService.getById(this.id).subscribe(
             (resident: any) => {
-                this.resident = resident; // Assign the fetched resident data to the local property
+                this.resident = resident;
                 console.log('Resident details loaded:', resident);
+                this.loadResidentRecords();
             },
             error => {
                 console.error('Error fetching resident details:', error);
-                // Handle error here (e.g., display error message)
             }
         );
     }
 
     loadResidentRecords() {
-        this.residentRecordService.getById(this.id).subscribe(
-            (record: any) => {
-                this.record = record; // Assign the fetched resident data to the local property
-                console.log('Resident details loaded:', record);
+        this.residentRecordService.getAllByResidentId(this.id).subscribe(
+            (records: ResidentRecord[]) => {
+                this.records = records;
+                console.log('Resident records loaded:', records);
             },
             error => {
-                console.error('Error fetching resident details:', error);
-                // Handle error here (e.g., display error message)
+                console.error('Error fetching resident records:', error);
             }
         );
     }
 
-    generateCertificate() {
-        this.residentRecordService.generateCertificate(this.id, this.record.certificatePurpose).subscribe(
+    generateCertificate(record: ResidentRecord) {
+        this.selectedRecord = record;
+        this.residentRecordService.generateCertificate(this.id, record.certificatePurpose).subscribe(
             (response: any) => {
                 console.log('Certificate generated:', response);
-                // Initiate download
                 window.open(response.pdfFilePath, '_blank');
             },
             error => {
                 console.error('Error generating certificate:', error);
-                // Handle error here (e.g., display error message)
             }
         );
     }

@@ -1,5 +1,4 @@
-<h1 *ngIf="isAddMode">Add Resident</h1>
-<h1 *ngIf="!isAddMode">Edit Resident</h1>
+<h1 *ngIf="isAddMode">Add Certificate Purpose</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
         <input type="hidden" formControlName="residentId" />

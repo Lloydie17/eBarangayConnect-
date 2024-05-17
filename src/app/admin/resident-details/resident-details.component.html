@@ -21,12 +21,12 @@
         </tr>
     </thead>
     <tbody>
-        <tr >
+        <tr *ngFor="let record of records">
             <td>{{resident.fullName}} </td>
             <td>{{record.certificatePurpose}}</td>
             <td>{{record.createdAt | date: 'longDate'}}</td>
             <td style="white-space: nowrap">
-                <button (click)="generateCertificate()" class="btn btn-sm btn-success mr-1">Download</button>
+                <button (click)="generateCertificate(record)" class="btn btn-sm btn-success mr-1">Download</button>
             </td>
         </tr>
     </tbody>
