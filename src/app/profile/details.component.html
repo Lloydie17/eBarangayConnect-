@@ -1,5 +1,6 @@
 <h1>My Profile</h1>
 <p>
+    <img [src]="'http://localhost:4000/' + account.profilePicture" alt="{{ account.firstName }}" style="border-radius: 30%; width: 200px; height: 200px;" /> <br /> <br />
     <strong>Name: </strong> {{account.title}} {{account.firstName}} {{account.lastName}}<br />
     <strong>Email: </strong> {{account.email}} <br />
     <strong>Role: </strong> {{account.role}} <br />

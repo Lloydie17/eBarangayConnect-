@@ -1,5 +1,9 @@
 <h1>Update Profile</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label>Profile Picture</label>
+        <input type="file" (change)="onFileSelected($event)" class="form-control-file" />
+    </div>
     <div class="form-row">
         <div class="form-group col">
             <label>Title</label>

@@ -9,4 +9,5 @@ export class Account {
     role: Role;
     isActive: boolean;
     jwtToken?: string;
+    profilePicture?: string;
 }
