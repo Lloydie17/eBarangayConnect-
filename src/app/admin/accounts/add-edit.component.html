@@ -1,6 +1,14 @@
 <h1 *ngIf="isAddMode">Create Account</h1>
 <h1 *ngIf="!isAddMode">Edit Account</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label>Change Profile Picture</label> <br/>
+        <label for="image">
+            <input name="image" id="image" style="display:none;" type="file" (change)="onFileSelected($event)" class="form-control-file"/>
+            <img [src]="'http://localhost:4000/' + account.profilePicture" alt="{{ account.firstName }}" style="border-radius: 30%; width: 200px; height: 200px; cursor: pointer;"/>
+        </label>
+    </div>
     <div class="form-row">
         <div class="form-group col">
             <label>Title</label>

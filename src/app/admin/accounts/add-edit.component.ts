@@ -14,6 +14,7 @@ export class AddEditComponent implements OnInit {
     loading = false;
     submitted = false;
     account: any = {};
+    selectedFile: File | null = null;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -35,7 +36,8 @@ export class AddEditComponent implements OnInit {
             role: ['', Validators.required],
             isActive: [true, Validators.required],
             password: ['', [Validators.minLength(6), this.isAddMode ? Validators.required : Validators.nullValidator]],
-            confirmPassword: ['']
+            confirmPassword: [''],
+            profilePicture: ['']
         }, {
             validator: MustMatch('password', 'confirmPassword')
         });
@@ -56,8 +58,11 @@ export class AddEditComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 
-    get isActiveValue(): string {
-        return this.form.get('isActive')?.value ? 'true' : 'false';
+    onFileSelected(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.selectedFile = file;
+        }
     }
 
     onSubmit() {
@@ -96,9 +101,20 @@ export class AddEditComponent implements OnInit {
 
     private updateAccount() {
         this.loading = true;
-
-        const formData = this.form.value;
-        formData.isActive = this.isActiveValue;
+        
+        const formData = new FormData();
+        
+        formData.append('title', this.form.get('title')?.value);
+        formData.append('firstName', this.form.get('firstName')?.value);
+        formData.append('lastName', this.form.get('lastName')?.value);
+        formData.append('email', this.form.get('email')?.value);
+        formData.append('password', this.form.get('password')?.value);
+        formData.append('confirmPassword', this.form.get('confirmPassword')?.value);
+        formData.append('isActive', this.form.get('isActive')?.value);
+        if (this.selectedFile) {
+            formData.append('profilePicture', this.selectedFile, this.selectedFile.name);
+        }
+        //formData.isActive = this.isActiveValue;
 
         this.accountService.update(this.id, formData)
             .pipe(first())
