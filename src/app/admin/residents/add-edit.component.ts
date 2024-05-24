@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { ResidentService, AlertService } from '@app/_services';
+import * as L from 'leaflet';
 
 @Component({ templateUrl: 'add-edit.component.html' })
 export class AddEditComponent implements OnInit {
@@ -43,6 +44,8 @@ export class AddEditComponent implements OnInit {
                 .pipe(first())
                 .subscribe(x => this.form.patchValue(x));
         }
+
+        this.initMap();
     }
 
     // convenience getter for easy access to form fields
@@ -95,5 +98,19 @@ export class AddEditComponent implements OnInit {
                     this.loading = false;
                 }
             });
+    }
+
+    initMap() {
+        const map = L.map('map').setView([10.297405769592698, 123.89704951632723], 20);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        map.on('click', (e: any) => {
+            const { lat, lng } = e.latlng;
+            this.form.controls['latitude'].setValue(lat.toString());
+            this.form.controls['longitude'].setValue(lng.toString());
+        });
     }
 }

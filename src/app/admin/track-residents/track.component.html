@@ -4,8 +4,10 @@
         <input type="text" [(ngModel)]="residentName">
         <button (click)="searchResident()">Search</button>
         <div id="map-container" class="map-container">
-            <div id="resident-label" class="resident-label" *ngIf="showResidentName">{{ displayedResidentName }}</div>
-            <iframe id="googleMap" src="https://www.google.com/maps?q=10.2973402,123.8968643&z=20&t=k&output=embed" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div id="map" style="height: 400px; width: 100%;"></div>
+        </div>
+        <div *ngIf="showResidentName" class="resident-name">
+            Resident Name: {{ displayedResidentName }}
         </div>
     </div>
 </div>
