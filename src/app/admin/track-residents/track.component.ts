@@ -75,7 +75,7 @@ export class TrackComponent implements OnInit {
     updateMap(latitude: number, longitude: number, fullName: string) {
         console.log("Latitude:", latitude);
         console.log("Longitude:", longitude);
-        this.map.setView([latitude, longitude], 20);
+        this.map.setView([latitude, longitude], 30);
         this.marker.setLatLng([latitude, longitude]);
         this.marker.setPopupContent(fullName).openPopup();
     }
